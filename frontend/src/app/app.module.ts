@@ -11,7 +11,8 @@ import {CustomerDetailsComponent} from "./customer-details/customer-details.comp
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
 import { BackendComponent } from './backend/backend.component';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+// import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { HomepageComponent } from './homepage/homepage.component';
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginComponent },
@@ -24,7 +25,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     CustomerDetailsComponent,
     CustomersComponent,
     BackendComponent,
-    BrowserAnimationsModule
+    // BrowserAnimationsModule,
+    HomepageComponent
   ],
   imports: [
     AppRoutingModule,
