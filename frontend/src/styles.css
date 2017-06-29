@@ -1,4 +1,11 @@
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+/*@import '~@angular/material/prebuilt-themes/indigo-pink.css';*/
+
 body {
+  /*padding: 2em 23em;*/
+  /*background:lightgray;*/
   margin:0;
   padding:1px;
   background-color: #c9c9c9;

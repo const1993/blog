@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import {RouterModule, Routes} from '@angular/router';
 import {DataService} from "./data.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {CustomersComponent} from "./customers/customers.component";
@@ -11,8 +10,10 @@ import {CustomerDetailsComponent} from "./customer-details/customer-details.comp
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
 import { BackendComponent } from './backend/backend.component';
-// import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { HomepageComponent } from './homepage/homepage.component';
+import { MaterialModule } from '@angular/material';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginComponent },
@@ -32,6 +33,7 @@ import { HomepageComponent } from './homepage/homepage.component';
     AppRoutingModule,
     BrowserModule,
     FormsModule,
+    MaterialModule,
     HttpModule
   ],
   providers: [DataService],
