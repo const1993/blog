@@ -13,7 +13,7 @@ import { BackendComponent } from './backend/backend.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { MaterialModule } from '@angular/material';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginComponent },
@@ -26,14 +26,14 @@ import { MaterialModule } from '@angular/material';
     CustomerDetailsComponent,
     CustomersComponent,
     BackendComponent,
-    // BrowserAnimationsModule,
     HomepageComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     FormsModule,
-    MaterialModule,
+    MdButtonModule,
+    MdToolbarModule,
     HttpModule
   ],
   providers: [DataService],
