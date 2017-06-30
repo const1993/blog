@@ -4,13 +4,20 @@ import { CustomersComponent } from './customers/customers.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from "./login/login.component";
+import {FrontComponent} from "./front/front.component";
+import {BackComponent} from "./back/back.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/customer', pathMatch: 'full' },
-  { path: 'home', component: HomepageComponent },
-   { path: 'detail/:id', component: CustomerDetailsComponent },
-  { path: 'customer',  component: CustomersComponent },
-  {path: 'login', component: LoginComponent},
+  {path: "", component:FrontComponent, children:[{
+    path: 'home', component: HomepageComponent
+  }]
+  },
+  {path: "backend", component:BackComponent, children:[{
+    path: 'customer',  component: CustomersComponent
+  }]
+  },
+   { path: 'detail/:id', component: CustomerDetailsComponent},
+   {path: 'login', component: LoginComponent},
 ];
 
 @NgModule({

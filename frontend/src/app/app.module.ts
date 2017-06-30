@@ -9,11 +9,11 @@ import {CustomersComponent} from "./customers/customers.component";
 import {CustomerDetailsComponent} from "./customer-details/customer-details.component";
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
-import { BackendComponent } from './backend/backend.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { MaterialModule } from '@angular/material';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
+import { FrontComponent } from './front/front.component';
+import {BackComponent} from "./back/back.component";
+import {BackendComponent} from "./backend/backend.component";
 
 // const appRoutes: Routes = [
 //   { path: 'login', component: LoginComponent },
@@ -25,8 +25,9 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
     LoginComponent,
     CustomerDetailsComponent,
     CustomersComponent,
-    BackendComponent,
-    HomepageComponent
+    HomepageComponent,
+    FrontComponent,
+    BackComponent
   ],
   imports: [
     AppRoutingModule,
@@ -39,5 +40,7 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
   providers: [DataService],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
 
