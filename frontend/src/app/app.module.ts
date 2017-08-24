@@ -11,12 +11,8 @@ import {FormsModule} from "@angular/forms";
 import { HomepageComponent } from './homepage/homepage.component';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
 import { FrontComponent } from './front/front.component';
-import {BackComponent} from "./back/back.component";
+import {BackComponent} from "../backend/back.component";
 import {APP_BASE_HREF} from "@angular/common";
-
-// const appRoutes: Routes = [
-//   { path: 'login', component: LoginComponent },
-// ];
 
 @NgModule({
   declarations: [
@@ -36,7 +32,7 @@ import {APP_BASE_HREF} from "@angular/common";
     MdToolbarModule,
     HttpModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/#'}],
+  providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent]
 })
 
