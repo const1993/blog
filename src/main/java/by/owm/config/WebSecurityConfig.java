@@ -2,6 +2,7 @@ package by.owm.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,11 +11,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    CorsFilter corsFilter() {
+        CorsFilter filter = new CorsFilter();
+        return filter;
+    }
+
+//    @Bean
+//    public UrlRewriteFilter getUrlRewriteFilter() {
+//        UrlRewriteFilter urlRewriteFilter = new MyUrlRewriteFilter();
+//        return urlRewriteFilter;
+//    }
 
     @Autowired
     private AuthenticationProvider mongoAuthenticationProvider;
@@ -24,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
         authenticationProvider(mongoAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers("/backend/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -38,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers( "/**");
+        web.ignoring().antMatchers( "/");
     }
 
     @Autowired
