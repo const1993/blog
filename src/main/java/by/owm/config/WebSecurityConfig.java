@@ -24,12 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-//    @Bean
-//    public UrlRewriteFilter getUrlRewriteFilter() {
-//        UrlRewriteFilter urlRewriteFilter = new MyUrlRewriteFilter();
-//        return urlRewriteFilter;
-//    }
-
     @Autowired
     private AuthenticationProvider mongoAuthenticationProvider;
 
@@ -38,11 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
         authenticationProvider(mongoAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
+//                .antMatchers("/#/", "/", "/#/login").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/#/login").permitAll()
+                .antMatchers("/backend").fullyAuthenticated()
+//                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/#/login")
                 .permitAll()
                 .and()
                 .logout()
@@ -52,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers( "/");
+        web.ignoring().antMatchers( "/#/", "/", "/#/login");
     }
 
     @Autowired
