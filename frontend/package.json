@@ -47,11 +47,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3",
-    "webpack": "^2.5.0",
-    "webpack-dev-middleware": "^1.10.2",
-    "webpack-dev-server": "^2.4.5",
-    "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "^4.1.0"
+    "typescript": "~2.3.3"
   }
 }

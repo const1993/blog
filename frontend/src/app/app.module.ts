@@ -8,11 +8,9 @@ import {CustomersComponent} from "./customers/customers.component";
 import {CustomerDetailsComponent} from "./customer-details/customer-details.component";
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
-// import { HomepageComponent } from './homepage/homepage.component';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule } from '@angular/material';
 import { FrontComponent } from './front/front.component';
 import {APP_BASE_HREF} from "@angular/common";
-import {BackendComponent} from "./backend/backend.component";
 
 @NgModule({
   declarations: [
@@ -20,9 +18,7 @@ import {BackendComponent} from "./backend/backend.component";
     LoginComponent,
     CustomerDetailsComponent,
     CustomersComponent,
-    // HomepageComponent,
     FrontComponent,
-    BackendComponent
   ],
   imports: [
     AppRoutingModule,
