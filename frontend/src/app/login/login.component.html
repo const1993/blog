@@ -1,8 +1,23 @@
-  <!--<form name="loginForm">-->
-    <!--<md-input-container class="md-block">-->
-        <!--<input type="text" name="email" ng-model="vm.formData.email" placeholder="login" required=""/>-->
-        <!--<div ng-messages="loginForm.email.$error" role="alert" multiple="">-->
-          <!--<div class="my-message" ng-message="required">You must supply a email.</div>-->
-        <!--</div>-->
-    <!--</md-input-container>-->
-  <!--</form>-->
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+      <form [formGroup]="loginForm" class="form-group" (ngSubmit)="onSubmit()" xmlns="http://www.w3.org/1999/html">
+        <md-form-field class="md-block">
+          <input mdInput type="text" name="email" [formControl]="email" placeholder="email" required=""/>
+          <md-error *ngIf="email.hasError('pattern')">
+            Please enter a valid email address
+          </md-error>
+          <md-error *ngIf="email.hasError('required')">
+            Email is <strong>required</strong>
+          </md-error>
+        </md-form-field>
+        <br>
+        <md-form-field class="md-block">
+          <input mdInput type="password" name="password" [formControl]="password" placeholder="password" required=""/>
+        </md-form-field>
+        <br>
+        <button md-raised-button color="primary" class="submit-btn" type="submit">Login!</button>
+      </form>
+    </div>
+  </div>
+</div>

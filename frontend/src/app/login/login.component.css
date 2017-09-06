@@ -1,0 +1,26 @@
+form {
+  padding: 15px;
+  width: 300px;
+  margin: auto;
+  background-color: #31b0d5;
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+
+}
