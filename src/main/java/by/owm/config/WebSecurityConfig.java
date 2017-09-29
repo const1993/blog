@@ -1,16 +1,21 @@
 package by.owm.config;
 
+import by.owm.config.filter.AuthenticationTokenProcessingFilter;
+import by.owm.service.acessToken.AccessTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 
 @Configuration
@@ -24,40 +29,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    private final AuthenticationProvider mongoAuthenticationProvider;
+
+    private final AccessTokenService accessTokenService;
+
     @Autowired
-    private AuthenticationProvider mongoAuthenticationProvider;
+    public WebSecurityConfig(final AccessTokenService accessTokenService,
+                             AuthenticationProvider mongoAuthenticationProvider) {
+        this.accessTokenService = accessTokenService;
+        this.mongoAuthenticationProvider = mongoAuthenticationProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-        authenticationProvider(mongoAuthenticationProvider)
+        http.csrf().disable().
+
+                authenticationProvider(mongoAuthenticationProvider)
                 .authorizeRequests()
-//                .antMatchers("/#/", "/", "/#/login").permitAll()
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/#/login").permitAll()
-                .antMatchers("/backend").fullyAuthenticated()
-//                .anyRequest().authenticated()
+                .antMatchers("/api/registration").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/autologin").permitAll()
+                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/forum/**").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/#/login")
-                .permitAll()
+//                .formLogin().loginPage("/api/login").permitAll()
+//                .and()
+                .logout().permitAll()
                 .and()
-                .logout()
-                .permitAll();
+                .addFilterBefore(new AuthenticationTokenProcessingFilter(accessTokenService), CsrfFilter.class);
+
     }
 
     @Override
     public void configure(final WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers( "/#/", "/", "/#/login");
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(mongoAuthenticationProvider)
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password("password")
-                .roles("USER");
+        auth.authenticationProvider(mongoAuthenticationProvider);
     }
 }

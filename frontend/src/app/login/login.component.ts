@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
+import {UserService} from '../services/user.service';
+import {Credentials} from '../objects/credentials';
+import {User} from "../objects/user";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -12,22 +15,23 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private userService: UserService) { }
   loginForm: FormGroup;
   email: FormControl;
   password: FormControl;
   http: Http;
+  credentials = new Credentials();
+  user = new User();
+  errorMessage: String;
 
   onSubmit() {
     if (this.loginForm.valid) {
-      var url = "/login";
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      var response = this.http.post(url, "", options)
-        .map(this.extractData)
-        .catch(this.handleErrorObservable);
-      console.log("Form Submitted! email: " + this.email.value + ", pass: " + this.password.value);
+      this.credentials.login = this.email.value;
+      this.credentials.password = this.password.value;
+       this.userService.findUserWithPromise(this.credentials)
+         .then(users => this.user = users[0],
+           error =>  this.errorMessage = <any>error);
+      console.log("Form Submitted! email: " + this.user.name + ", pass: " + this.user.email);
     }
   }
 

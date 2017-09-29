@@ -7,6 +7,7 @@ import {
 } from "@angular/material";
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {UserService} from "../services/user.service";
 
 // containers
 
@@ -23,7 +24,10 @@ import {CommonModule} from "@angular/common";
     MdToolbarModule,
     MdIconModule,
     MdInputModule,
-    MdFormFieldModule
+    MdFormFieldModule,
+  ],
+  providers: [
+    UserService
   ],
   declarations: [LoginComponent
   ]
