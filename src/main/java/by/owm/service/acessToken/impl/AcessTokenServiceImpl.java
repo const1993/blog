@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * Created by haria on 29.9.17.
  */
 @Service
-public class AcessTokenServiceImpl implements AccessTokenService{
+public class AcessTokenServiceImpl implements AccessTokenService {
     @Override
     public AccessTokenEntity getLastToken(@NotNull UserEntity user) {
         return null;
@@ -19,6 +19,8 @@ public class AcessTokenServiceImpl implements AccessTokenService{
 
     @Override
     public AccessTokenEntity createNewToken(@NotNull UserEntity user) {
+
+
         return null;
     }
 
