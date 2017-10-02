@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.credentials.login = this.email.value;
+      this.credentials.email = this.email.value;
       this.credentials.password = this.password.value;
        this.userService.findUserWithPromise(this.credentials)
          .then(users => this.user = users[0],

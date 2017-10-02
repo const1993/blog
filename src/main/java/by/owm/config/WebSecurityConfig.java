@@ -42,19 +42,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().
-
-                authenticationProvider(mongoAuthenticationProvider)
+        http.csrf().disable()
+                .authenticationProvider(mongoAuthenticationProvider)
                 .authorizeRequests()
-                .antMatchers("/api/registration").permitAll()
-                .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/autologin").permitAll()
-                .antMatchers("/api/user/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/forum/**").permitAll()
+                .anyRequest().permitAll()
+//                .antMatchers("/api/registration").permitAll()
+//                .antMatchers("/api/login/**").permitAll()
+//                .antMatchers("/images/**").permitAll()
+//                .antMatchers("/forum/**").permitAll()
+                .antMatchers("/api/notallowed").denyAll()
                 .and()
-//                .formLogin().loginPage("/api/login").permitAll()
-//                .and()
                 .logout().permitAll()
                 .and()
                 .addFilterBefore(new AuthenticationTokenProcessingFilter(accessTokenService), CsrfFilter.class);
@@ -64,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/api/login");
     }
 
     @Autowired
