@@ -1,10 +1,7 @@
 package by.owm.controller;
 
 import by.owm.dto.UserDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/api")
@@ -17,7 +14,7 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/notallowed")
+    @GetMapping("/notallowed")
     public String no() {
         return "login";
     }
