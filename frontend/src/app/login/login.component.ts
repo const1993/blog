@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from "@angular/forms";
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
+import {Observable} from 'rxjs';
 import {UserService} from '../services/user.service';
 import {Credentials} from '../objects/credentials';
 import {User} from "../objects/user";
+import {Router} from "@angular/router";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -15,7 +16,9 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
+
   loginForm: FormGroup;
   email: FormControl;
   password: FormControl;
@@ -28,24 +31,35 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.credentials.email = this.email.value;
       this.credentials.password = this.password.value;
-       this.userService.findUserWithPromise(this.credentials)
-         .then(users => this.user = users[0],
-           error =>  this.errorMessage = <any>error);
-      console.log("Form Submitted! email: " + this.user.name + ", pass: " + this.user.email);
+      this.userService.findUserWithPromise(this.credentials)
+        .then(user => {
+          this.user = <User> user;
+        },
+            error => {
+              this.errorMessage = <any>error;
+            }
+        )
+        .then(() => {
+          if (this.errorMessage == null) {
+            this.router.navigate(['../backend']);
+          } else {
+            console.error(this.errorMessage);
+          }
+        });
     }
   }
-
 
   private extractData(res: Response) {
     let body = res.json();
     return body.data || {};
   }
 
-  private handleErrorObservable (error: Response | any) {
+  private handleErrorObservable(error: Response | any) {
     console.error(error.message || error);
     return Observable.throw(error.message || error);
   }
-  private handleErrorPromise (error: Response | any) {
+
+  private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);
   }
@@ -62,7 +76,7 @@ export class LoginComponent implements OnInit {
     ]);
     this.password = new FormControl('', [
       Validators.required,
-      Validators.minLength(8)
+      Validators.minLength(4)
     ]);
   }
 

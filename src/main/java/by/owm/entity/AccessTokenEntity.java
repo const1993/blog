@@ -8,14 +8,20 @@ import javax.validation.constraints.NotNull;
 public class AccessTokenEntity {
 
     private String token;
+    private String userId;
 
-    @NotNull
-    public String setToken(final String token) {
-        return this.token = token;
+    public AccessTokenEntity(final @NotNull String token, final @NotNull String userId) {
+        this.token = token;
+        this.userId = userId;
     }
 
     @NotNull
     public String getToken() {
         return token;
+    }
+
+    @NotNull
+    public String getUserId() {
+        return userId;
     }
 }

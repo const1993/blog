@@ -2,6 +2,7 @@ package by.owm.config;
 
 import by.owm.config.filter.AuthenticationTokenProcessingFilter;
 import by.owm.service.acessToken.AccessTokenService;
+import by.owm.service.db.client.MongoClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,15 +21,16 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final AuthenticationProvider mongoAuthenticationProvider;
+
+    private final AccessTokenService accessTokenService;
+
+
     @Bean
     CorsFilter corsFilter() {
         CorsFilter filter = new CorsFilter();
         return filter;
     }
-
-    private final AuthenticationProvider mongoAuthenticationProvider;
-
-    private final AccessTokenService accessTokenService;
 
     @Autowired
     public WebSecurityConfig(final AccessTokenService accessTokenService,

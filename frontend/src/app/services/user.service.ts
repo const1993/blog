@@ -11,9 +11,11 @@ import {Credentials} from "../objects/credentials";
 @Injectable()
 export class UserService {
   url = "/api/login";
-  constructor(private http:Http) { }
 
-  findUserWithPromise(credentials:Credentials): Promise<User[]> {
+  constructor(private http:Http) {
+  }
+
+  findUserWithPromise(credentials:Credentials): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, credentials, options).toPromise()
@@ -22,8 +24,17 @@ export class UserService {
   }
 
   private extractData(res: Response) {
-    let body = res.json();
-    return body.data || {};
+    console.log("Response:", res);
+    let responseJson = res.json();
+
+    var user = new User();
+    user.name = responseJson.name;
+    user.surname = responseJson.surname;
+    user.email = responseJson.email;
+    user.token = responseJson.token;
+    user.roles = responseJson.roles;
+
+    return user;
   }
 
   private handleErrorObservable (error: Response | any) {

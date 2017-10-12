@@ -1,13 +1,19 @@
 package by.owm.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * Created by haria on 29.9.17.
  */
+@Document(collection = "User")
 public class UserEntity extends BaseEntity {
 
+    @Id
+    private String id;
     private String name;
     private String surname;
     private String email;
@@ -70,5 +76,26 @@ public class UserEntity extends BaseEntity {
 
     public void setRoles(List<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", token='" + token + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

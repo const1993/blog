@@ -1,5 +1,6 @@
 package by.owm.dto;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,14 +13,23 @@ public class UserDto implements Serializable {
     private String surname;
     private String email;
     private String token;
-    private String password;
     private List<RoleDto> roles;
+
+    public UserDto(@NotNull final String name, @NotNull final String surname, @NotNull final String email,
+                   @NotNull final  String token,
+                   @NotNull final List<RoleDto> roles) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.token = token;
+        this.roles = roles;
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull final String name) {
         this.name = name;
     }
 
@@ -27,7 +37,7 @@ public class UserDto implements Serializable {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(@NotNull final String surname) {
         this.surname = surname;
     }
 
@@ -35,7 +45,7 @@ public class UserDto implements Serializable {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotNull final String email) {
         this.email = email;
     }
 
@@ -43,7 +53,7 @@ public class UserDto implements Serializable {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(@NotNull final String token) {
         this.token = token;
     }
 
@@ -51,16 +61,7 @@ public class UserDto implements Serializable {
         return roles;
     }
 
-    public void setRoles(final List<RoleDto> roles) {
+    public void setRoles(@NotNull final List<RoleDto> roles) {
         this.roles = roles;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }
