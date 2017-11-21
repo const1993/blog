@@ -10,15 +10,23 @@ import {Credentials} from "../objects/credentials";
 
 @Injectable()
 export class UserService {
-  url = "/api/login";
+  url = "/api";
 
   constructor(private http:Http) {
+  }
+
+  findUserByTokenWithPromise(user:User): Promise<User> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.url + 'checkToken', user, options).toPromise()
+      .then(this.extractData)
+      .catch(this.handleErrorPromise);
   }
 
   findUserWithPromise(credentials:Credentials): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.url, credentials, options).toPromise()
+    return this.http.post(this.url + '/login', credentials, options).toPromise()
       .then(this.extractData)
       .catch(this.handleErrorPromise);
   }

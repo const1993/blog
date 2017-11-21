@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from "@angular/forms";
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import {UserService} from '../services/user.service';
 import {Credentials} from '../objects/credentials';
 import {User} from "../objects/user";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -16,7 +17,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private cookieService: CookieService) {
   }
 
   loginForm: FormGroup;
@@ -33,20 +34,29 @@ export class LoginComponent implements OnInit {
       this.credentials.password = this.password.value;
       this.userService.findUserWithPromise(this.credentials)
         .then(user => {
-          this.user = <User> user;
-        },
-            error => {
-              this.errorMessage = <any>error;
-            }
+            this.user = <User> user;
+            this.errorMessage = null;
+          },
+          error => {
+            this.errorMessage = <any>error;
+
+          }
         )
         .then(() => {
           if (this.errorMessage == null) {
-            this.router.navigate(['../backend']);
+            this.cookieService.set("user", JSON.stringify(this.user));
+
+            console.log('added', this.cookieService.get("user"));
+            this.router.navigate(['backend']);
           } else {
             console.error(this.errorMessage);
           }
         });
     }
+  }
+
+  public getUser(): User {
+    return this.user;
   }
 
   private extractData(res: Response) {
@@ -86,5 +96,4 @@ export class LoginComponent implements OnInit {
       password: this.password
     });
   }
-
 }

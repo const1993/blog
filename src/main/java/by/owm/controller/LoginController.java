@@ -1,7 +1,7 @@
 package by.owm.controller;
 
 import by.owm.dto.CredentialsDto;
-import by.owm.dto.RoleDto;
+import by.owm.dto.RegisterUserDto;
 import by.owm.dto.UserDto;
 import by.owm.entity.AccessTokenEntity;
 import by.owm.entity.RoleEntity;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -35,12 +36,12 @@ public class LoginController {
     public ResponseEntity<UserDto> greet(@RequestBody final CredentialsDto credentials) {
         final UserEntity userEntity = userServiceImpl.findUserByEmailAndPassword(credentials.getEmail(), credentials.getPassword());
         if (userEntity == null) {
-            return badRequest().build();
+            return notFound().build();
         }
 
         final AccessTokenEntity accessTokenEntity = accessTokenServiceImpl.createNewToken(userEntity);
         if (accessTokenEntity == null) {
-            return badRequest().build();
+            return notFound().build();
         }
 
         final UserDto user = new UserDto(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail(),
@@ -49,14 +50,14 @@ public class LoginController {
         return ok().body(user);
     }
 
-    @GetMapping("/create")
-    public String greet() {
+    @PostMapping("/create")
+    public ResponseEntity<UserDto> create(@RequestBody final RegisterUserDto user) {
 
         List<RoleEntity> roles = new ArrayList<>();
         roles.add(new RoleEntity("USER"));
-        boolean result = userServiceImpl.addNewUser("user", "user", "user", "user@user.ru", roles);
+        boolean result = userServiceImpl.addNewUser(user.getName(), user.getSurname(), user.getPassword(), user.getEmail(), roles);
 
-        return "login";
+        return ok().body(user);
     }
 
     @GetMapping("/notallowed")

@@ -7,9 +7,6 @@ import {
 } from "@angular/material";
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import {UserService} from "../services/user.service";
-
-// containers
 
 @NgModule({
   imports: [
@@ -26,10 +23,7 @@ import {UserService} from "../services/user.service";
     MdInputModule,
     MdFormFieldModule,
   ],
-  providers: [
-    UserService
-  ],
-  declarations: [LoginComponent
-  ]
+
+  declarations: [LoginComponent]
 })
 export class LoginModule  {}

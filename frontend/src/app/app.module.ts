@@ -14,6 +14,7 @@ import {
 import { FrontComponent } from './front/front.component';
 import {APP_BASE_HREF, CommonModule} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {CookieService} from "ngx-cookie-service";
 
 
 @NgModule({
