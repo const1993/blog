@@ -7,6 +7,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { User } from '../objects/user';
 import {Credentials} from "../objects/credentials";
+import {Token} from "../objects/Token";
 
 @Injectable()
 export class UserService {
@@ -15,10 +16,10 @@ export class UserService {
   constructor(private http:Http) {
   }
 
-  findUserByTokenWithPromise(user:User): Promise<User> {
+  findUserByTokenWithPromise(token:Token): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.url + 'checkToken', user, options).toPromise()
+    return this.http.post(this.url + '/checkToken', token, options).toPromise()
       .then(this.extractData)
       .catch(this.handleErrorPromise);
   }

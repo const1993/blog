@@ -2,6 +2,7 @@ package by.owm.controller;
 
 import by.owm.dto.CredentialsDto;
 import by.owm.dto.RegisterUserDto;
+import by.owm.dto.TokenDto;
 import by.owm.dto.UserDto;
 import by.owm.entity.AccessTokenEntity;
 import by.owm.entity.RoleEntity;
@@ -33,8 +34,29 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> greet(@RequestBody final CredentialsDto credentials) {
+    public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
         final UserEntity userEntity = userServiceImpl.findUserByEmailAndPassword(credentials.getEmail(), credentials.getPassword());
+        if (userEntity == null) {
+            return notFound().build();
+        }
+
+        final AccessTokenEntity accessTokenEntity = accessTokenServiceImpl.createNewToken(userEntity);
+        if (accessTokenEntity == null) {
+            return notFound().build();
+        }
+
+        userEntity.setToken(accessTokenEntity.getToken());
+        userServiceImpl.updateUser(userEntity);
+
+        final UserDto user = new UserDto(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail(),
+                accessTokenEntity.getToken(), new ArrayList<>());
+
+        return ok().body(user);
+    }
+
+    @PostMapping("/checkToken")
+    public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
+        final UserEntity userEntity = userServiceImpl.findUserByToken(tokenDto.getToken());
         if (userEntity == null) {
             return notFound().build();
         }

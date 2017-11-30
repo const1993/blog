@@ -38,4 +38,6 @@ public interface UserService {
     public boolean addNewUser(final String name, final String surname, final String password, final String email,
                            final List<RoleEntity> roles);
 
+    public boolean updateUser(final UserEntity userEntity);
+
 }
