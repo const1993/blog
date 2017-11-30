@@ -13,11 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.badRequest;
@@ -84,6 +81,10 @@ public class LoginController {
         List<RoleEntity> roles = new ArrayList<>();
         roles.add(new RoleEntity("USER"));
         boolean result = userServiceImpl.addNewUser(user.getName(), user.getSurname(), user.getPassword(), user.getEmail(), roles);
+
+        if(!result) {
+            return badRequest().build();
+        }
 
         return ok().body(user);
     }
