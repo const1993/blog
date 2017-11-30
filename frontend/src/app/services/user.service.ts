@@ -16,6 +16,14 @@ export class UserService {
   constructor(private http:Http) {
   }
 
+  logout(token:Token): Promise<User> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.url + '/logout', token, options).toPromise()
+      .then(this.extractData)
+      .catch(this.handleErrorPromise);
+  }
+
   findUserByTokenWithPromise(token:Token): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -23,6 +31,7 @@ export class UserService {
       .then(this.extractData)
       .catch(this.handleErrorPromise);
   }
+
 
   findUserWithPromise(credentials:Credentials): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });

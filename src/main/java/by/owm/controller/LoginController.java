@@ -25,6 +25,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping(value = "/api")
 public class LoginController {
 
+    public static final String USER = "USER";
     private final UserService userServiceImpl;
     private final AccessTokenService accessTokenServiceImpl;
 
@@ -48,7 +49,10 @@ public class LoginController {
 
         userEntity.setToken(accessTokenEntity.getToken());
         userEntity.setLastLogin(LocalDateTime.now());
-        userServiceImpl.updateUser(userEntity);
+        boolean result = userServiceImpl.updateUser(userEntity);
+        if(!result) {
+            return badRequest().build();
+        }
 
         final UserDto user = new UserDto(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail(),
                 accessTokenEntity.getToken(), new ArrayList<>());
@@ -63,8 +67,8 @@ public class LoginController {
             return notFound().build();
         }
 
-        LocalDateTime lastLogin = userEntity.getLastLogin();
-        LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime lastLogin = userEntity.getLastLogin();
+        final LocalDateTime now = LocalDateTime.now();
         if (now.minusHours(2).isAfter(lastLogin)) {
             return ResponseEntity.badRequest().build();
         }
@@ -75,11 +79,27 @@ public class LoginController {
         return ok().body(user);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity logout(@RequestBody final TokenDto tokenDto) {
+        final UserEntity userEntity = userServiceImpl.findUserByToken(tokenDto.getToken());
+        if (userEntity == null) {
+            return ok().body(new UserEntity());
+        }
+
+        userEntity.setToken("");
+        boolean result = userServiceImpl.updateUser(userEntity);
+        if(!result) {
+            return badRequest().build();
+        }
+
+        return ok().body(new UserEntity());
+    }
+
     @PostMapping("/create")
     public ResponseEntity<UserDto> create(@RequestBody final RegisterUserDto user) {
 
-        List<RoleEntity> roles = new ArrayList<>();
-        roles.add(new RoleEntity("USER"));
+        final List<RoleEntity> roles = new ArrayList<>();
+        roles.add(new RoleEntity(USER));
         boolean result = userServiceImpl.addNewUser(user.getName(), user.getSurname(), user.getPassword(), user.getEmail(), roles);
 
         if(!result) {
