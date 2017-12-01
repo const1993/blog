@@ -1,6 +1,6 @@
 package by.owm.domain.auth;
 
-import by.owm.domain.user.UserService;
+import by.owm.domain.user.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MongoAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserService userService;
+    private final UserManagement userService;
 
     @Autowired
-    public MongoAuthenticationProvider(final UserService userService) {
+    public MongoAuthenticationProvider(final UserManagement userService) {
         this.userService = userService;
     }
 
