@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +21,11 @@ public class UserEntity extends BaseEntity {
     private String password;
     private String token;
     private List<RoleEntity> roles;
+    private LocalDateTime lastLogin;
+
+    public UserEntity() {
+
+    }
 
     public UserEntity(@NotNull final String name, @NotNull final String surname, @NotNull final String password,
                       @NotNull final String email, @NotNull final List<RoleEntity> roles) {
@@ -74,7 +80,7 @@ public class UserEntity extends BaseEntity {
         return roles;
     }
 
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(@NotNull final List<RoleEntity> roles) {
         this.roles = roles;
     }
 
@@ -85,6 +91,16 @@ public class UserEntity extends BaseEntity {
     public void setId(String id) {
         this.id = id;
     }
+
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
 
     @Override
     public String toString() {

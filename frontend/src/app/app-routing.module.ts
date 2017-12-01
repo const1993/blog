@@ -4,6 +4,8 @@ import {FrontComponent} from "./front/front.component";
 import {NgModule} from "@angular/core";
 import {AuthGuard} from "./backend/auth-guard/auth-guard.service";
 import {LoginComponent} from "./login/login.component";
+import {CookieService} from "ngx-cookie-service";
+import {UserService} from "./services/user.service";
 
 const routes: Routes = [
   {
@@ -27,7 +29,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard, CookieService, UserService]
 })
 export class AppRoutingModule {
 }

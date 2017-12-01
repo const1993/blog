@@ -3,7 +3,9 @@ package by.owm.config.filter;
 import by.owm.entity.RoleEntity;
 import by.owm.entity.UserEntity;
 import by.owm.service.acessToken.AccessTokenService;
+import by.owm.service.jpa.RolesRepository;
 import com.sun.istack.internal.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +28,11 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     @NotNull
     private final AccessTokenService accessTokenService;
 
-    public AuthenticationTokenProcessingFilter(@NotNull final AccessTokenService accessTokenService) {
+    private final RolesRepository rolesRepository;
+
+    public AuthenticationTokenProcessingFilter(@NotNull final AccessTokenService accessTokenService, @NotNull final RolesRepository rolesRepository) {
         this.accessTokenService = accessTokenService;
+        this.rolesRepository = rolesRepository;
     }
 
     @Override

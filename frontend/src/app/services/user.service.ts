@@ -7,18 +7,36 @@ import 'rxjs/add/operator/toPromise';
 
 import { User } from '../objects/user';
 import {Credentials} from "../objects/credentials";
+import {Token} from "../objects/Token";
 
 @Injectable()
 export class UserService {
-  url = "/api/login";
+  url = "/api";
 
   constructor(private http:Http) {
   }
 
+  logout(token:Token): Promise<User> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.url + '/logout', token, options).toPromise()
+      .then(this.extractData)
+      .catch(this.handleErrorPromise);
+  }
+
+  findUserByTokenWithPromise(token:Token): Promise<User> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.url + '/checkToken', token, options).toPromise()
+      .then(this.extractData)
+      .catch(this.handleErrorPromise);
+  }
+
+
   findUserWithPromise(credentials:Credentials): Promise<User> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.url, credentials, options).toPromise()
+    return this.http.post(this.url + '/login', credentials, options).toPromise()
       .then(this.extractData)
       .catch(this.handleErrorPromise);
   }

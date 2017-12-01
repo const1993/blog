@@ -40,6 +40,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public boolean updateUser(@NotNull final UserEntity userEntity) {
+        userRepository.save(userEntity);
+        return true;
+    }
+
     @SuppressWarnings("all")
     private String md5(final String input) {
 
