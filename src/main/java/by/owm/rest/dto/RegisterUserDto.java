@@ -1,26 +1,24 @@
 package by.owm.rest.dto;
 
-import javax.validation.constraints.NotNull;
+import lombok.Data;
+
 import java.util.List;
 
-/**
- * Created by haria on 13.10.17.
- */
+@Data
 public class RegisterUserDto extends UserDto {
+
+    private static final long serialVersionUID = 5826279845703415455L;
 
     private String password;
 
-    public RegisterUserDto(@NotNull final String name, final @NotNull String surname, final @NotNull String email,
-                           final @NotNull String token, final @NotNull List<RoleDto> roles, final @NotNull String password) {
+    public RegisterUserDto(final String name,
+                           final String surname,
+                           final String email,
+                           final String token,
+                           final List<RoleDto> roles,
+                           final String password) {
+
         super(name, surname, email, token, roles);
         this.password = password;
     }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
 }

@@ -1,7 +1,11 @@
 package by.owm.rest.dto;
 
-/**
- * Created by haria on 2.10.17.
- */
-public class RoleDto {
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class RoleDto implements Serializable {
+    
+    private static final long serialVersionUID = 801593000260887869L;
 }
