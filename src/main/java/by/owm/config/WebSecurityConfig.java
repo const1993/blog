@@ -1,9 +1,9 @@
 package by.owm.config;
 
-import by.owm.config.filter.AuthenticationTokenProcessingFilter;
-import by.owm.service.acessToken.AccessTokenService;
-import by.owm.service.db.client.MongoClient;
-import by.owm.service.jpa.RolesRepository;
+import by.owm.rest.filter.AuthenticationTokenProcessingFilter;
+import by.owm.rest.filter.CorsFilter;
+import by.owm.domain.acessToken.AccessTokenService;
+import by.owm.domain.jpa.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
