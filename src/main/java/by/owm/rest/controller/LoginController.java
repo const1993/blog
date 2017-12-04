@@ -1,10 +1,10 @@
 package by.owm.rest.controller;
 
 import by.owm.domain.acessToken.AccessTokenService;
-import by.owm.domain.user.UserService;
 import by.owm.domain.entity.AccessTokenEntity;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
+import by.owm.domain.user.UserService;
 import by.owm.rest.dto.CredentialsDto;
 import by.owm.rest.dto.RegisterUserDto;
 import by.owm.rest.dto.TokenDto;
@@ -111,6 +111,18 @@ public class LoginController {
         )
                 ? ok().body(user)
                 : badRequest().build();
+    }
+
+    @GetMapping("/create-stub-user")
+    public ResponseEntity<UserDto> createStubUser() {
+        return create(new RegisterUserDto(
+                "user",
+                "user",
+                "user@gmail.ru",
+                EMPTY,
+                emptyList(),
+                "pass"
+        ));
     }
 
     @GetMapping("/notallowed")
