@@ -5,9 +5,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-/**
- * Created by haria on 05.03.17.
- */
 public interface ArticlesService {
 
     void createOrUpdateArticle(final String id, final String title, final String text);

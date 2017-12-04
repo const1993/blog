@@ -14,26 +14,26 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 public class DataServiceImpl implements DataService {
-    public static final String USERS = "users";
+
+    private static final String USERS = "users";
 
     @Autowired
     private MongoClient mongoClient;
 
-    public boolean logIn(String name, String password)
-    {
+    public boolean logIn(String name, String password) {
         final BsonDocument credentials = new BsonDocument("name", new BsonString(name))
                 .append("password", new BsonString(md5(password)));
 
         return mongoClient.getCollection(USERS).count(credentials) > 0;
     }
 
-    public boolean create(final String name, final String password, final String emaail, final  String key) {
+    public boolean create(final String name, final String password, final String emaail, final String key) {
 
         final BsonDocument user = new BsonDocument("name", new BsonString(name)).append("password",
                 new BsonString(md5(password)));
         user.put("email", new BsonString(emaail));
         final MongoCollection collection = mongoClient.getCollection(USERS);
-        if(collection.count(user) == 0) {
+        if (collection.count(user) == 0) {
             user.put("active", new BsonBoolean(false));
             user.put("act_key", new BsonString(key));
             collection.insertOne(user);
@@ -52,7 +52,7 @@ public class DataServiceImpl implements DataService {
 
         String md5 = null;
 
-        if(null == input) return null;
+        if (null == input) return null;
 
         try {
 

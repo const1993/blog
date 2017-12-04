@@ -6,9 +6,6 @@ import com.sun.istack.internal.Nullable;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by haria on 29.9.17.
- */
 public interface AccessTokenService {
     /**
      * Get a last access token for the user.

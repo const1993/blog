@@ -22,6 +22,4 @@ public interface UserRepository extends MongoRepository<UserEntity, String> {
      * @return unic token.
      */
     public UserEntity findUserByToken(final String token);
-
-//    public boolean updateUser(final UserEntity userEntity);
 }

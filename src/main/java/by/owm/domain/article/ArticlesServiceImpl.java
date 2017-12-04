@@ -17,13 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by haria on 05.03.17.
- */
 @Service
 public class ArticlesServiceImpl implements ArticlesService {
 
-    public static final String ARTICLE = "article";
+    private static final String ARTICLE = "article";
 
     @Autowired
     private DataService dataService;
@@ -61,14 +58,11 @@ public class ArticlesServiceImpl implements ArticlesService {
     }
 
     @Override
-    public void putToArchive(String id) {
-
+    public void putToArchive(final String id) {
     }
 
     @Override
     public List<JSONObject> findArticleByNameAndFilter(final JSONObject object) {
-
-
         return null;
     }
 

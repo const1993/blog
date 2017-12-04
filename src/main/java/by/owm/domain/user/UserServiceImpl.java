@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
         this.mongoClient = mongoClient;
     }
 
-
     @Override
     public UserEntity findUserByEmailAndPassword(@NotNull final String email, @NotNull final String password) {
         return userRepository.findUserByEmailAndPassword(email, md5(password));
