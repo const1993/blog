@@ -16,38 +16,37 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityAdapter extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationProvider mongoAuthenticationProvider;
-    private final AuthenticationFilter authenticationFilter;
+    private final AuthenticationProvider provider;
+    private final AuthenticationFilter filter;
 
     @Autowired
-    public WebSecurityConfig(final AuthenticationProvider mongoAuthenticationProvider,
-                             final AuthenticationFilter authenticationFilter) {
-        this.mongoAuthenticationProvider = mongoAuthenticationProvider;
-        this.authenticationFilter = authenticationFilter;
+    public WebSecurityAdapter(final AuthenticationProvider provider,
+                              final AuthenticationFilter filter) {
+        this.provider = provider;
+        this.filter = filter;
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authenticationProvider(mongoAuthenticationProvider)
+                .authenticationProvider(provider)
                 .authorizeRequests()
                 .antMatchers("/api/notallowed").denyAll()
                 .and()
                 .logout().permitAll()
                 .and()
-                .addFilterBefore(authenticationFilter, CsrfFilter.class);
+                .addFilterBefore(filter, CsrfFilter.class);
     }
 
     @Override
     public void configure(final WebSecurity web) throws Exception {
-        super.configure(web);
         web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/api/login");
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(mongoAuthenticationProvider);
+    @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(provider);
     }
 }
