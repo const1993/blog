@@ -1,12 +1,8 @@
 package by.owm.config;
 
-import by.owm.domain.acessToken.AccessTokenService;
-import by.owm.domain.jpa.RolesRepository;
 import by.owm.rest.filter.AuthenticationFilter;
-import by.owm.rest.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,24 +19,12 @@ import org.springframework.security.web.csrf.CsrfFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationProvider mongoAuthenticationProvider;
-    private final AccessTokenService accessTokenService;
-    private final RolesRepository rolesRepository;
     private final AuthenticationFilter authenticationFilter;
 
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsFilter filter = new CorsFilter();
-        return filter;
-    }
-
     @Autowired
-    public WebSecurityConfig(final AccessTokenService accessTokenService,
-                             final AuthenticationProvider mongoAuthenticationProvider,
-                             final RolesRepository rolesRepository,
+    public WebSecurityConfig(final AuthenticationProvider mongoAuthenticationProvider,
                              final AuthenticationFilter authenticationFilter) {
-        this.accessTokenService = accessTokenService;
         this.mongoAuthenticationProvider = mongoAuthenticationProvider;
-        this.rolesRepository = rolesRepository;
         this.authenticationFilter = authenticationFilter;
     }
 
