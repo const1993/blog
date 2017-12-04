@@ -11,26 +11,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class MongoAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        final String name = authentication.getName();
-        final Object principal = authentication.getPrincipal();
-        Object credentials = authentication.getCredentials();
-        boolean isExist = userService.logIn(name, principal.toString());
-        if (!isExist) {
-            return null;
-        }
-        final UsernamePasswordAuthenticationToken result =
-                new UsernamePasswordAuthenticationToken(principal, credentials, authentication.getAuthorities());
-        result.setDetails(authentication.getDetails());
-        return result;
+    @Autowired
+    public MongoAuthenticationProvider(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
-    public boolean supports(Class<?> aClass) {
-        return false;
+    public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+
+        final String name = authentication.getName();
+        final Object principal = authentication.getPrincipal();
+        final Object credentials = authentication.getCredentials();
+
+        if (!userService.logIn(name, principal.toString())) {
+            return null;
+        }
+
+        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, credentials, authentication.getAuthorities());
+        token.setDetails(authentication.getDetails());
+
+        return token;
+    }
+
+    @Override
+    public boolean supports(final Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
