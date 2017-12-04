@@ -1,27 +1,16 @@
 package by.owm.domain.entity;
 
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-/**
- * Created by haria on 29.9.17.
- */
-public class AccessTokenEntity {
+import java.io.Serializable;
+
+@Data
+@AllArgsConstructor
+public class AccessTokenEntity implements Serializable {
+
+    private static final long serialVersionUID = 5585325453017798997L;
 
     private String token;
     private String userId;
-
-    public AccessTokenEntity(final @NotNull String token, final @NotNull String userId) {
-        this.token = token;
-        this.userId = userId;
-    }
-
-    @NotNull
-    public String getToken() {
-        return token;
-    }
-
-    @NotNull
-    public String getUserId() {
-        return userId;
-    }
 }
