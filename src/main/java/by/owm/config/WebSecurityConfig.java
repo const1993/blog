@@ -1,9 +1,9 @@
 package by.owm.config;
 
-import by.owm.rest.filter.AuthenticationTokenProcessingFilter;
-import by.owm.rest.filter.CorsFilter;
 import by.owm.domain.acessToken.AccessTokenService;
 import by.owm.domain.jpa.RolesRepository;
+import by.owm.rest.filter.AuthenticationFilter;
+import by.owm.rest.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationProvider mongoAuthenticationProvider;
     private final AccessTokenService accessTokenService;
     private final RolesRepository rolesRepository;
+    private final AuthenticationFilter authenticationFilter;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -35,10 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public WebSecurityConfig(final AccessTokenService accessTokenService,
                              final AuthenticationProvider mongoAuthenticationProvider,
-                             final RolesRepository rolesRepository) {
+                             final RolesRepository rolesRepository,
+                             final AuthenticationFilter authenticationFilter) {
         this.accessTokenService = accessTokenService;
         this.mongoAuthenticationProvider = mongoAuthenticationProvider;
         this.rolesRepository = rolesRepository;
+        this.authenticationFilter = authenticationFilter;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll()
                 .and()
-                .addFilterBefore(new AuthenticationTokenProcessingFilter(accessTokenService, rolesRepository), CsrfFilter.class);
+                .addFilterBefore(authenticationFilter, CsrfFilter.class);
     }
 
     @Override
