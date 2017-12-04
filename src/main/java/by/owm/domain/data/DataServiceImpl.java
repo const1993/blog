@@ -1,7 +1,6 @@
-package by.owm.domain.db.impl;
+package by.owm.domain.data;
 
-import by.owm.domain.db.DataService;
-import by.owm.domain.db.client.MongoClient;
+import by.owm.domain.mongo.MongoClient;
 import com.mongodb.client.MongoCollection;
 import org.bson.BsonBoolean;
 import org.bson.BsonDocument;

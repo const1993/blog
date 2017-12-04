@@ -1,6 +1,6 @@
-package by.owm.domain.db;
+package by.owm.domain.data;
 
-import by.owm.domain.db.client.MongoClient;
+import by.owm.domain.mongo.MongoClient;
 
 /**
  * Created by haria on 13.10.2015.

@@ -1,4 +1,4 @@
-package by.owm.domain.acessToken.impl;
+package by.owm.domain.acessToken;
 
 import by.owm.domain.entity.AccessTokenEntity;
 import by.owm.domain.entity.UserEntity;

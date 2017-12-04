@@ -1,10 +1,9 @@
-package by.owm.domain.db.impl;
+package by.owm.domain.user;
 
-import by.owm.domain.db.UserService;
-import by.owm.domain.db.client.MongoClient;
+import by.owm.domain.mongo.MongoClient;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
-import by.owm.domain.jpa.UserRepository;
+import by.owm.domain.repository.UserRepository;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.springframework.beans.factory.annotation.Autowired;

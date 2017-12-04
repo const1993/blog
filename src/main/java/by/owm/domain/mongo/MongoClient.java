@@ -1,4 +1,4 @@
-package by.owm.domain.db.client;
+package by.owm.domain.mongo;
 
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;

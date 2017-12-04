@@ -1,4 +1,4 @@
-package by.owm.domain.db;
+package by.owm.domain.user;
 
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;

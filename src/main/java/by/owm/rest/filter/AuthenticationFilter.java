@@ -1,6 +1,6 @@
 package by.owm.rest.filter;
 
-import by.owm.domain.db.UserService;
+import by.owm.domain.user.UserService;
 import by.owm.domain.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

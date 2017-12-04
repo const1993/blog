@@ -1,8 +1,7 @@
-package by.owm.domain.db.impl;
+package by.owm.domain.article;
 
-import by.owm.domain.db.ArticlesService;
-import by.owm.domain.db.DataService;
-import by.owm.domain.db.client.MongoClient;
+import by.owm.domain.data.DataService;
+import by.owm.domain.mongo.MongoClient;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;

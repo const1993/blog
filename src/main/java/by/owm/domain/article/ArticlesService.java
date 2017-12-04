@@ -1,4 +1,4 @@
-package by.owm.domain.db;
+package by.owm.domain.article;
 
 import org.bson.Document;
 import org.json.JSONObject;

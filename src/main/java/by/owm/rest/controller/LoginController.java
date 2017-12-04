@@ -1,7 +1,7 @@
 package by.owm.rest.controller;
 
 import by.owm.domain.acessToken.AccessTokenService;
-import by.owm.domain.db.UserService;
+import by.owm.domain.user.UserService;
 import by.owm.domain.entity.AccessTokenEntity;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
