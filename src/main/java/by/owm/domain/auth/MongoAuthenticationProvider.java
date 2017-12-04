@@ -1,6 +1,6 @@
 package by.owm.domain.auth;
 
-import by.owm.domain.user.UserService;
+import by.owm.domain.db.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

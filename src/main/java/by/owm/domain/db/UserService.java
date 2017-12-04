@@ -40,4 +40,6 @@ public interface UserService {
     boolean updateUser(final UserEntity userEntity);
 
     boolean logOut(String token);
+
+    boolean logIn(String name, String password);
 }

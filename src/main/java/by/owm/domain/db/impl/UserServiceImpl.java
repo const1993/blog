@@ -1,9 +1,12 @@
 package by.owm.domain.db.impl;
 
 import by.owm.domain.db.UserService;
+import by.owm.domain.db.client.MongoClient;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
 import by.owm.domain.jpa.UserRepository;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +17,23 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.springframework.util.StringUtils.isEmpty;
 
-/**
- * Created by haria on 2.10.17.
- */
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String USERS = "users";
+
+    private final UserRepository userRepository;
+    private final MongoClient mongoClient;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserServiceImpl(final UserRepository userRepository,
+                           final MongoClient mongoClient) {
+        this.userRepository = userRepository;
+        this.mongoClient = mongoClient;
+    }
+
 
     @Override
     public UserEntity findUserByEmailAndPassword(@NotNull final String email, @NotNull final String password) {
@@ -35,21 +46,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addNewUser(@NotNull final String name, @NotNull final String surname, @NotNull final String password,
-                              @NotNull final String email, @NotNull final List<RoleEntity> roles) {
-        final UserEntity userEntity = new UserEntity(name, surname, md5(password), email, roles);
-        userRepository.save(userEntity);
-        return true;
+    public boolean addNewUser(@NotNull final String name,
+                              @NotNull final String surname,
+                              @NotNull final String password,
+                              @NotNull final String email,
+                              @NotNull final List<RoleEntity> roles) {
+
+        return userRepository.save(new UserEntity(name, surname, md5(password), email, roles)) != null;
     }
 
     @Override
     public boolean updateUser(@NotNull final UserEntity userEntity) {
-        userRepository.save(userEntity);
-        return true;
+        return userRepository.save(userEntity) != null;
     }
 
     @Override
-    public boolean logOut(String token) {
+    public boolean logOut(final String token) {
 
         final UserEntity userEntity = this.findUserByToken(token);
 
@@ -62,28 +74,31 @@ public class UserServiceImpl implements UserService {
         return this.updateUser(userEntity);
     }
 
-    @SuppressWarnings("all")
+    @Override
+    public boolean logIn(final String name, final String password) {
+
+        final BsonDocument credentials = new BsonDocument()
+                .append("name", new BsonString(name))
+                .append("password", new BsonString(md5(password)));
+
+        return mongoClient.getCollection(USERS).count(credentials) > 0;
+    }
+
     private String md5(final String input) {
 
-        String md5 = null;
-
-        if (null == input) return null;
+        if (isEmpty(input)) {
+            throw new IllegalArgumentException("Imput data shoud not be null or empty.");
+        }
 
         try {
 
-            //Create MessageDigest object for MD5
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-
-            //Update input string in message digest
+            final MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(input.getBytes(), 0, input.length());
 
-            //Converts message digest value in base 16 (hex)
-            md5 = new BigInteger(1, digest.digest()).toString(16);
+            return new BigInteger(1, digest.digest()).toString(16);
 
-        } catch (NoSuchAlgorithmException e) {
-
-            e.printStackTrace();
+        } catch (final NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
         }
-        return md5;
     }
 }
