@@ -1,7 +1,5 @@
 package by.owm.rest.controller;
 
-import by.owm.domain.acessToken.AccessTokenService;
-import by.owm.domain.entity.AccessTokenEntity;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
 import by.owm.domain.user.UserService;
@@ -34,54 +32,16 @@ public class LoginController {
     private static final String USER = "USER";
 
     private final UserService userService;
-    private final AccessTokenService tokenService;
 
     @Autowired
-    public LoginController(final UserService userService, final AccessTokenService accessTokenService) {
+    public LoginController(final UserService userService) {
         this.userService = userService;
-        this.tokenService = accessTokenService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
-        final UserEntity userEntity = userService.findUserByEmailAndPassword(credentials.getEmail(), credentials.getPassword());
-        if (userEntity == null) {
-            return notFound().build();
-        }
 
-        final AccessTokenEntity accessTokenEntity = tokenService.createNewToken(userEntity);
-        if (accessTokenEntity == null) {
-            return notFound().build();
-        }
-
-        userEntity.setToken(accessTokenEntity.getToken());
-        userEntity.setLastLogin(now());
-        boolean result = userService.updateUser(userEntity);
-        if (!result) {
-            return badRequest().build();
-        }
-
-        final UserDto user = new UserDto(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                accessTokenEntity.getToken(),
-                emptyList());
-
-        return ok().body(user);
-    }
-
-    @PostMapping("/checkToken")
-    public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
-        final UserEntity userEntity = userService.findUserByToken(tokenDto.getToken());
-        if (userEntity == null) {
-            return notFound().build();
-        }
-
-        final LocalDateTime lastLogin = userEntity.getLastLogin();
-        if (now().minusHours(2).isAfter(lastLogin)) {
-            return badRequest().build();
-        }
+        final UserEntity userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
 
         final UserDto user = new UserDto(
                 userEntity.getName(),
@@ -91,6 +51,24 @@ public class LoginController {
                 emptyList());
 
         return ok().body(user);
+    }
+
+    @PostMapping("/checkToken")
+    public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
+        final UserEntity userEntity = userService.checkToken(tokenDto.getToken());
+
+        if (userEntity == null) {
+            return badRequest().build();
+        } else {
+            final UserDto user = new UserDto(
+                    userEntity.getName(),
+                    userEntity.getSurname(),
+                    userEntity.getEmail(),
+                    userEntity.getToken(),
+                    emptyList());
+
+            return ok().body(user);
+        }
     }
 
     @PostMapping("/logout")

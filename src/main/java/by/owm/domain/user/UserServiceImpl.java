@@ -10,19 +10,25 @@ import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final SecureRandom random;
 
     @Autowired
     public UserServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.random = new SecureRandom();
     }
 
     @Override
@@ -65,8 +71,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean logIn(final String name, final String password) {
+    public boolean checkIslogIn(final String name, final String password) {
         return userRepository.existsByNameAndPassword(name, password);
+    }
+
+    @Override
+    public UserEntity logIn(String email, String password) {
+
+        long longToken = Math.abs(random.nextLong());
+        final String token = Long.toString(longToken, 16);
+
+        final UserEntity userEntity = findUserByEmailAndPassword(email, password);
+
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User with this email doesn't exist.");
+        }
+
+        userEntity.setToken(token);
+        userEntity.setLastLogin(now());
+
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserEntity checkToken(String token) {
+
+        final UserEntity userEntity = findUserByToken(token);
+
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User with this token doesn't find.");
+        }
+
+        final LocalDateTime lastLogin = userEntity.getLastLogin();
+        final boolean after = now().minusHours(2).isAfter(lastLogin);
+        return after ? userEntity : null;
     }
 
     private String md5(final String input) {

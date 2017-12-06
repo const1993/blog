@@ -41,5 +41,9 @@ public interface UserService {
 
     boolean logOut(String token);
 
-    boolean logIn(String name, String password);
+    boolean checkIslogIn(String name, String password);
+
+    UserEntity logIn(String email, String password);
+
+    UserEntity checkToken(String token);
 }
