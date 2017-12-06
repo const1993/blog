@@ -1,4 +1,4 @@
-package by.owm.domain.entity;
+package by.owm.domain.model;
 
 
 import lombok.AllArgsConstructor;

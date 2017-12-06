@@ -1,4 +1,4 @@
-package by.owm.domain.entity;
+package by.owm.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "User")
-public class UserEntity implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = -6871891971516377552L;
 
@@ -25,14 +25,14 @@ public class UserEntity implements Serializable {
     private String password;
     private String email;
     private String token;
-    private List<RoleEntity> roles;
+    private List<Role> roles;
     private LocalDateTime lastLogin;
 
-    public UserEntity(final String name,
-                      final String surname,
-                      final String password,
-                      final String email,
-                      final List<RoleEntity> roles) {
+    public User(final String name,
+                final String surname,
+                final String password,
+                final String email,
+                final List<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.password = password;

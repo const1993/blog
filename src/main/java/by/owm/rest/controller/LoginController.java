@@ -1,7 +1,7 @@
 package by.owm.rest.controller;
 
-import by.owm.domain.entity.RoleEntity;
-import by.owm.domain.entity.UserEntity;
+import by.owm.domain.model.Role;
+import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
 import by.owm.rest.dto.CredentialsDto;
 import by.owm.rest.dto.RegisterUserDto;
@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
 import static java.time.LocalDateTime.now;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.springframework.http.ResponseEntity.badRequest;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -41,7 +38,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
 
-        final UserEntity userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
+        final User userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
 
         final UserDto user = new UserDto(
                 userEntity.getName(),
@@ -55,7 +52,7 @@ public class LoginController {
 
     @PostMapping("/checkToken")
     public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
-        final UserEntity userEntity = userService.checkToken(tokenDto.getToken());
+        final User userEntity = userService.checkToken(tokenDto.getToken());
 
         if (userEntity == null) {
             return badRequest().build();
@@ -85,7 +82,7 @@ public class LoginController {
                 user.getSurname(),
                 user.getPassword(),
                 user.getEmail(),
-                singletonList(new RoleEntity(USER))
+                singletonList(new Role(USER))
         )
                 ? ok().body(user)
                 : badRequest().build();

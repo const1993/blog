@@ -1,7 +1,7 @@
 package by.owm.domain.user;
 
-import by.owm.domain.entity.RoleEntity;
-import by.owm.domain.entity.UserEntity;
+import by.owm.domain.model.Role;
+import by.owm.domain.model.User;
 import by.owm.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static org.apache.commons.lang.StringUtils.EMPTY;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Service
@@ -32,12 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findUserByEmailAndPassword(@NotNull final String email, @NotNull final String password) {
+    public User findUserByEmailAndPassword(@NotNull final String email, @NotNull final String password) {
         return userRepository.findUserByEmailAndPassword(email, md5(password));
     }
 
     @Override
-    public UserEntity findUserByToken(@NotNull final String token) {
+    public User findUserByToken(@NotNull final String token) {
         return userRepository.findUserByToken(token);
     }
 
@@ -46,28 +45,28 @@ public class UserServiceImpl implements UserService {
                               @NotNull final String surname,
                               @NotNull final String password,
                               @NotNull final String email,
-                              @NotNull final List<RoleEntity> roles) {
+                              @NotNull final List<Role> roles) {
 
-        return userRepository.save(new UserEntity(name, surname, md5(password), email, roles)) != null;
+        return userRepository.save(new User(name, surname, md5(password), email, roles)) != null;
     }
 
     @Override
-    public boolean updateUser(@NotNull final UserEntity userEntity) {
-        return userRepository.save(userEntity) != null;
+    public boolean updateUser(@NotNull final User user) {
+        return userRepository.save(user) != null;
     }
 
     @Override
     public boolean logOut(final String token) {
 
-        final UserEntity userEntity = this.findUserByToken(token);
+        final User user = this.findUserByToken(token);
 
-        if (userEntity == null) {
+        if (user == null) {
             return true;
         }
 
-        userEntity.setToken(EMPTY);
+        user.setToken(EMPTY);
 
-        return this.updateUser(userEntity);
+        return this.updateUser(user);
     }
 
     @Override
@@ -76,35 +75,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity logIn(String email, String password) {
+    public User logIn(String email, String password) {
 
         long longToken = Math.abs(random.nextLong());
         final String token = Long.toString(longToken, 16);
 
-        final UserEntity userEntity = findUserByEmailAndPassword(email, password);
+        final User user = findUserByEmailAndPassword(email, password);
 
-        if (userEntity == null) {
+        if (user == null) {
             throw new IllegalArgumentException("User with this email doesn't exist.");
         }
 
-        userEntity.setToken(token);
-        userEntity.setLastLogin(now());
+        user.setToken(token);
+        user.setLastLogin(now());
 
-        return userRepository.save(userEntity);
+        return userRepository.save(user);
     }
 
     @Override
-    public UserEntity checkToken(String token) {
+    public User checkToken(String token) {
 
-        final UserEntity userEntity = findUserByToken(token);
+        final User user = findUserByToken(token);
 
-        if (userEntity == null) {
+        if (user == null) {
             throw new IllegalArgumentException("User with this token doesn't find.");
         }
 
-        final LocalDateTime lastLogin = userEntity.getLastLogin();
+        final LocalDateTime lastLogin = user.getLastLogin();
         final boolean after = now().minusHours(2).isAfter(lastLogin);
-        return after ? userEntity : null;
+        return after ? user : null;
     }
 
     private String md5(final String input) {

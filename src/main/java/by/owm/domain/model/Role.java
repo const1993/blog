@@ -1,4 +1,4 @@
-package by.owm.domain.entity;
+package by.owm.domain.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @Document(collection = "Roles")
-public class RoleEntity implements GrantedAuthority {
+public class Role implements GrantedAuthority {
 
     private static final long serialVersionUID = 7400150112674192109L;
 
@@ -15,7 +15,7 @@ public class RoleEntity implements GrantedAuthority {
     private String id;
     private String authority;
 
-    public RoleEntity(final String authority) {
+    public Role(final String authority) {
         this.authority = authority;
     }
 
