@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @RestController
@@ -30,7 +31,7 @@ public class WebController {
     public List<Customer> getAll() {
         return customers.entrySet().stream()
                 .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @GetMapping(value = "/customer/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
