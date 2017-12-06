@@ -1,11 +1,8 @@
 package by.owm.domain.user;
 
-import by.owm.domain.mongo.MongoClient;
 import by.owm.domain.entity.RoleEntity;
 import by.owm.domain.entity.UserEntity;
 import by.owm.domain.repository.UserRepository;
-import org.bson.BsonDocument;
-import org.bson.BsonString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +18,11 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String USERS = "users";
-
     private final UserRepository userRepository;
-    private final MongoClient mongoClient;
 
     @Autowired
-    public UserServiceImpl(final UserRepository userRepository,
-                           final MongoClient mongoClient) {
+    public UserServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.mongoClient = mongoClient;
     }
 
     @Override
@@ -74,12 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean logIn(final String name, final String password) {
-
-        final BsonDocument credentials = new BsonDocument()
-                .append("name", new BsonString(name))
-                .append("password", new BsonString(md5(password)));
-
-        return mongoClient.getCollection(USERS).count(credentials) > 0;
+        return userRepository.existsByNameAndPassword(name, password);
     }
 
     private String md5(final String input) {

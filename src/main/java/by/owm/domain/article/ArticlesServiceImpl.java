@@ -1,7 +1,6 @@
 package by.owm.domain.article;
 
-import by.owm.domain.data.DataService;
-import by.owm.domain.mongo.MongoClient;
+import by.owm.domain.repository.ArticleRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
@@ -20,13 +19,12 @@ import java.util.List;
 @Service
 public class ArticlesServiceImpl implements ArticlesService {
 
-    private static final String ARTICLE = "article";
+    private final ArticleRepository repository;
 
     @Autowired
-    private DataService dataService;
-
-    @Autowired
-    private MongoClient mongoClient;
+    public ArticlesServiceImpl(ArticleRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void createOrUpdateArticle(final String id, final String title, final String text) {
@@ -82,10 +80,7 @@ public class ArticlesServiceImpl implements ArticlesService {
     }
 
     private MongoCollection<Document> getCollection() {
-        return mongoClient.getCollection(ARTICLE);
-    }
-
-    public MongoClient getMongoClient() {
-        return dataService.getMongoClient();
+        return null;
+//                mongoClient.getCollection(ARTICLE);
     }
 }
