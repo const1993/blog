@@ -2,7 +2,19 @@
 <header class="backend-header">
   <base href="/backend">
 
-  <button md-button (click)="logout()" >Logout</button>
 </header>
+<div id="menu-backend" class="collapse navbar-collapse">
+  <md-toolbar>
+            <span id="menu-block">
+              <button [routerLink]="['/backend/articles']" routerLinkActive="active" md-button>Управление статьями</button>
+              <button [routerLink]="['/backend/settings']" routerLinkActive="active" md-button>Настройки</button>
+            </span>
+            <span id="exit-block">
+               <button md-button (click)="logout()" >Выход</button>
+            </span>
+  </md-toolbar>
+</div>
+
+<router-outlet></router-outlet>
 <footer class="backend-footer"></footer>
 </body>
