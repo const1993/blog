@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DozerMapper implements MapperManagment {
+public class DozerMapper implements MapperManagement {
 
     private final Mapper mapper;
 
