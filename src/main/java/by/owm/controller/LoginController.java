@@ -21,6 +21,9 @@ import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang.StringUtils.EMPTY;
+
 @RestController
 @RequestMapping(value = "/api")
 public class LoginController {
@@ -107,6 +110,19 @@ public class LoginController {
         }
 
         return ok().body(user);
+    }
+
+
+    @GetMapping("/create-stub-user")
+    public ResponseEntity<UserDto> createStubUser() {
+        return create(new RegisterUserDto(
+                "user",
+                "user",
+                "user@gmail.ru",
+                EMPTY,
+                emptyList(),
+                "pass"
+        ));
     }
 
     @GetMapping("/notallowed")

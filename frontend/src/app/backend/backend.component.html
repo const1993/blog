@@ -4,15 +4,15 @@
 
 </header>
 <div id="menu-backend" class="collapse navbar-collapse">
-  <md-toolbar>
+  <mat-toolbar>
             <span id="menu-block">
-              <button [routerLink]="['/backend/articles']" routerLinkActive="active" md-button>Управление статьями</button>
-              <button [routerLink]="['/backend/settings']" routerLinkActive="active" md-button>Настройки</button>
+              <button [routerLink]="['/backend/articles']" routerLinkActive="active" mat-button>Управление статьями</button>
+              <button [routerLink]="['/backend/settings']" routerLinkActive="active" mat-button>Настройки</button>
             </span>
             <span id="exit-block">
-               <button md-button (click)="logout()" >Выход</button>
+               <button mat-button (click)="logout()" >Выход</button>
             </span>
-  </md-toolbar>
+  </mat-toolbar>
 </div>
 
 <router-outlet></router-outlet>
