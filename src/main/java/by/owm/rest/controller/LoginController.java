@@ -1,5 +1,6 @@
 package by.owm.rest.controller;
 
+import by.owm.domain.mapper.MapperManagment;
 import by.owm.domain.model.Role;
 import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
@@ -28,25 +29,19 @@ public class LoginController {
     private static final String USER = "USER";
 
     private final UserService userService;
+    private final MapperManagment mapper;
 
     @Autowired
-    public LoginController(final UserService userService) {
+    public LoginController(final UserService userService,
+                           final MapperManagment mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
-
         final User userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
-
-        final UserDto user = new UserDto(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                userEntity.getToken(),
-                emptyList());
-
-        return ok().body(user);
+        return ok().body(mapper.map(userEntity, UserDto.class));
     }
 
     @PostMapping("/checkToken")
