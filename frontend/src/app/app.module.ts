@@ -7,8 +7,8 @@ import {CustomerDetailsComponent} from "./customer-details/customer-details.comp
 import {HttpModule} from "@angular/http";
 import { FrontComponent } from './front/front.component';
 import {APP_BASE_HREF} from "@angular/common";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -19,12 +19,12 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule} from "@
   ],
   imports: [
     AppRoutingModule,
-    BrowserAnimationsModule,
     MatButtonModule,
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
     MatIconModule,
+    BrowserAnimationsModule,
     HttpModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}],

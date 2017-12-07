@@ -9,11 +9,6 @@ const routes: Routes = [
     component: BackendComponent,
     children: [
       {
-        path: '',
-        loadChildren: './articles/articles.module#ArticlesModule',
-        canActivate: [AuthGuard]
-      },
-      {
         path: 'articles',
         loadChildren: './articles/articles.module#ArticlesModule',
         canActivate: [AuthGuard]

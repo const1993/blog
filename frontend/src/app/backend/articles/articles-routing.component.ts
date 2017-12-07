@@ -5,6 +5,7 @@ import {ArticlesComponent} from "./articles.component";
 const routes: Routes = [
   {
     path: '',
+    // outlet: "backend",
     component: ArticlesComponent
   }
 ];
