@@ -1,4 +1,4 @@
-package by.owm.domain.mail;
+package by.owm.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

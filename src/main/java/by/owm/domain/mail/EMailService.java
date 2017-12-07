@@ -1,6 +1,9 @@
 package by.owm.domain.mail;
 
+import by.owm.domain.model.Mail;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,85 +16,111 @@ import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import static java.util.Arrays.asList;
+import static javax.mail.Message.RecipientType.TO;
 import static javax.mail.Session.getDefaultInstance;
 
 @Service
 public class EMailService implements MailService {
 
-    private static final Logger logger = Logger.getLogger(EMailService.class);
+    private static final Logger LOGGER = Logger.getLogger(EMailService.class);
 
-    private Properties properties;
+    private final String host;
+    private final Integer port;
+    private final String username;
+    private final String password;
+
     private Session mailSession;
-    private Store store;
+
+    @Autowired
+    public EMailService(@Value("${mail.host}") final String host,
+                        @Value("${mail.port}") final Integer port,
+                        @Value("${mail.username}") final String username,
+                        @Value("${mail.password}") final String password) {
+        this.host = host;
+        this.port = port;
+        this.username = username;
+        this.password = password;
+    }
 
     @PostConstruct
     public void init() throws NoSuchProviderException {
-        //TODO add init properties
+        final Properties properties = new Properties();
+        //TODO: add properties, which meail session need
+
         this.mailSession = getDefaultInstance(properties);
-        store = mailSession.getStore("imaps");
     }
 
     @Override
     public void sendMail(final Mail mail) {
         try {
 
-            MimeMessage message = new MimeMessage(mailSession);
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(mail.getRecipient()));
+            final MimeMessage message = new MimeMessage(mailSession);
+            message.addRecipient(TO, new InternetAddress(mail.getRecipient()));
             message.setSubject("no-response");
             message.setContent(mail.getBody(), "text/html; charset=utf-8");
 
             Transport transport = mailSession.getTransport("smtps");
-            transport.connect(
-                    properties.getProperty("mail.host"),
-                    Integer.valueOf(properties.getProperty("mail.port")),
-                    properties.getProperty("mail.username"),
-                    properties.getProperty("mail.password"));
+            transport.connect(host, port, username, password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
 
         } catch (MessagingException e) {
-            logger.error("Error in sending e-mail.", e);
+            LOGGER.error("Error in sending e-mail.", e);
+            throw new IllegalStateException("Error in sending e-mail.", e);
         }
     }
 
-    public List<Message> getMailList(String box, Integer start, Integer end) throws MessagingException {
-        Folder folder = getFolder(box);
-
-        List<Message> messages = new ArrayList<>();
-        if (start != null && end != null) {
-            messages.addAll(asList(folder.getMessages(start, end)));
-        } else {
-            messages.addAll(asList(folder.getMessages()));
-        }
-
-        return messages;
-    }
-
-    public int getMailCount(String box) throws MessagingException {
-        Folder folder = getFolder(box);
-        return folder.getMessageCount();
-    }
-
-    private Folder getFolder(String box) {
+    @Override
+    public List<Message> getMailList(final String box, final Integer start, final Integer end) {
         try {
-            store.connect("smtp.gmail.com", properties.getProperty("mail.username"), properties.getProperty("mail.password"));
+            final Folder folder = getFolder(box);
 
-            Folder folder = store.getFolder(box);
-            folder.open(Folder.READ_ONLY);
-            return folder;
 
+            final List<Message> messages;
+
+            if (start == null && end == null) {
+                messages = asList(folder.getMessages());
+            } else if (start == null) {
+                messages = asList(folder.getMessages(0, end));
+            } else if (end == null) {
+                messages = asList(folder.getMessages(start, folder.getMessageCount()));
+            } else {
+                messages = asList(folder.getMessages(start, end));
+            }
+
+            folder.close(false);
+
+            return messages;
         } catch (MessagingException e) {
-            logger.error("Error in sending e-mail.", e);
-            throw new IllegalStateException("", e);
+            LOGGER.error("Error. Get mail list failed.", e);
+            throw new IllegalStateException("Error. Get mail list failed.", e);
         }
     }
 
-    protected MimeMessage getMessage(Session mailSession) throws MessagingException {
-        return new MimeMessage(mailSession);
+    @Override
+    public int getMailCount(final String box) {
+        try {
+            final Folder folder = getFolder(box);
+            final int count = folder.getMessageCount();
+            folder.close(false);
+            return count;
+        } catch (MessagingException e) {
+            LOGGER.error("Error. Get mail count failed.", e);
+            throw new IllegalStateException("Error. Get mail count failed.", e);
+        }
+    }
+
+    private Folder getFolder(final String box) throws MessagingException {
+        final Store store = mailSession.getStore("imaps");
+        store.connect(host, username, password);
+
+        final Folder folder = store.getFolder(box);
+        folder.open(Folder.READ_ONLY);
+
+        return folder;
     }
 }
