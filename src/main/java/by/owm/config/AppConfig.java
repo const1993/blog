@@ -5,7 +5,8 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@EnableWebMvc
+//TODO figure out: how this annotation influence on dispatcher. Maybe need additional configuration
+//@EnableWebMvc
 @EnableSpringDataWebSupport
 public class AppConfig {
 }
