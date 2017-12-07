@@ -16,14 +16,18 @@ import static java.util.stream.Collectors.toMap;
 @Configuration
 public class DozerConfigRefresher {
 
-    @Autowired
-    private Collection<BeanFactory> beanFactories;
+    private final Collection<BeanFactory> beanFactories;
+    private final Collection<BeanMappingBuilder> builders;
+    private final DozerBeanMapper mapper;
 
     @Autowired
-    private Collection<BeanMappingBuilder> builders;
-
-    @Autowired
-    private DozerBeanMapper mapper;
+    public DozerConfigRefresher(final Collection<BeanFactory> beanFactories,
+                                final Collection<BeanMappingBuilder> builders,
+                                final DozerBeanMapper mapper) {
+        this.beanFactories = beanFactories;
+        this.builders = builders;
+        this.mapper = mapper;
+    }
 
     @EventListener
     public void handleContextRefresh(final ContextRefreshedEvent event) {
