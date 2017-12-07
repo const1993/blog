@@ -46,20 +46,8 @@ public class LoginController {
 
     @PostMapping("/checkToken")
     public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
-        final User userEntity = userService.checkToken(tokenDto.getToken());
-
-        if (userEntity == null) {
-            return badRequest().build();
-        } else {
-            final UserDto user = new UserDto(
-                    userEntity.getName(),
-                    userEntity.getSurname(),
-                    userEntity.getEmail(),
-                    userEntity.getToken(),
-                    emptyList());
-
-            return ok().body(user);
-        }
+        final User user = userService.checkToken(tokenDto.getToken());
+        return user == null ? badRequest().build() : ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/logout")
