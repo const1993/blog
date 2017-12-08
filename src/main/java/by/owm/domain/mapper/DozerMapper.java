@@ -1,16 +1,15 @@
 package by.owm.domain.mapper;
 
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DozerMapper implements MapperManagement {
+public class DozerMapper implements Mapper {
 
-    private final Mapper mapper;
+    private final org.dozer.Mapper mapper;
 
     @Autowired
-    public DozerMapper(final Mapper mapper) {
+    public DozerMapper(final org.dozer.Mapper mapper) {
         this.mapper = mapper;
     }
 

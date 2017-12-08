@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 
-public class MapperManagementTest extends AbstractTest {
+public class MapperTest extends AbstractTest {
 
     @Autowired
-    private MapperManagement mapper;
+    private Mapper mapper;
 
     @Test
     public void test_map_userDto2User_expect_success() {

@@ -1,6 +1,6 @@
 package by.owm.rest.controller;
 
-import by.owm.domain.mapper.MapperManagement;
+import by.owm.domain.mapper.Mapper;
 import by.owm.domain.model.Role;
 import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
@@ -29,11 +29,11 @@ public class LoginController {
     private static final String USER = "USER";
 
     private final UserService userService;
-    private final MapperManagement mapper;
+    private final Mapper mapper;
 
     @Autowired
     public LoginController(final UserService userService,
-                           final MapperManagement mapper) {
+                           final Mapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
     }

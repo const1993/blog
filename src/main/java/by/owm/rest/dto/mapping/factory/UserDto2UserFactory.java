@@ -1,6 +1,6 @@
 package by.owm.rest.dto.mapping.factory;
 
-import by.owm.domain.mapper.MapperManagement;
+import by.owm.domain.mapper.Mapper;
 import by.owm.domain.model.Role;
 import by.owm.domain.model.User;
 import by.owm.rest.dto.UserDto;
@@ -15,10 +15,10 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class UserDto2UserFactory implements BeanFactory {
 
-    private final MapperManagement mapper;
+    private final Mapper mapper;
 
     @Autowired
-    public UserDto2UserFactory(final MapperManagement mapper) {
+    public UserDto2UserFactory(final Mapper mapper) {
         this.mapper = mapper;
     }
 
