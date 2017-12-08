@@ -5,7 +5,6 @@ import {SettingsComponent} from "./settings.component";
 const routes: Routes = [
   {
     path: '',
-    // outlet: "backend",
     component: SettingsComponent
   }
 ];

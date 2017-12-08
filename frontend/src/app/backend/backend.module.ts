@@ -3,6 +3,7 @@ import {BackendComponent} from "./backend.component";
 import {FroalaEditorModule, FroalaViewModule} from "angular-froala-wysiwyg";
 import {MatButtonModule, MatToolbarModule} from "@angular/material";
 import {BackendRoutingModule} from "./backend-routing.module";
+import { EditorComponent } from './editor/editor.component';
 
 @NgModule({
   imports: [
@@ -10,8 +11,7 @@ import {BackendRoutingModule} from "./backend-routing.module";
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     MatButtonModule,
-    MatToolbarModule,
-    // BrowserAnimationsModule
+    MatToolbarModule
   ],
       declarations: [BackendComponent]
 })

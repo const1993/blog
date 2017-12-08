@@ -38,7 +38,7 @@ body {
   margin-bottom: 5px;
 }
 
-#menu-backend
+.menu-backend
 {
   height: 40px;
   background-color: #10fffd;
@@ -58,7 +58,7 @@ body {
 {
   background-color: white;
   height: 870px;
-  padding: 10px;
+  padding: 0px;
   margin: auto;
   width: 100%;
 }
@@ -152,6 +152,6 @@ body {
 
 .backend-header {
   width : 100%;
-  height: 70px;
+  height: 100px;
   background-color: #31b0d5;
 }

@@ -7,19 +7,24 @@ import {CookieService} from "ngx-cookie-service";
 import {UserService} from "./services/user.service";
 
 const routes: Routes = [{
-    path: "", component: FrontComponent, children: [{
-      path: "home", loadChildren: './homepage/homepage.module#HomepageModule'
-    }]
+  path: "", component: FrontComponent, children: [{
+    path: "home",
+    loadChildren: './homepage/homepage.module#HomepageModule'
+  }]
+},
+  {
+    path: "login",
+    loadChildren: './login/login.module#LoginModule'
   },
   {
-    path: "login", loadChildren: './login/login.module#LoginModule'
-  },
-  {
-      path: "backend", loadChildren: './backend/backend.module#BackendModule',  canActivate: [AuthGuard]
+    path: "backend",
+    loadChildren: './backend/backend.module#BackendModule',
+    // canActivate: [AuthGuard]
   },
   {path: 'detail/:id', component: CustomerDetailsComponent},
   {
-    path: "**",  redirectTo: "/home"
+    path: "**",
+    redirectTo: "/home"
   }
 ];
 

@@ -9,14 +9,24 @@ const routes: Routes = [
     component: BackendComponent,
     children: [
       {
+        path: '',
+        loadChildren: './articles/articles.module#ArticlesModule',
+        // canActivate: [AuthGuard]
+      },
+      {
         path: 'articles',
         loadChildren: './articles/articles.module#ArticlesModule',
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: 'settings',
         loadChildren: './settings/settings.module#SettingsModule',
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
+      },
+      {
+        path: 'editor/:id',
+        loadChildren: './editor/editor.module#EditorModule',
+        // canActivate: [AuthGuard]
       }
 
     ]
