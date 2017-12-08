@@ -1,5 +1,6 @@
 package by.owm.rest.controller;
 
+import by.owm.domain.mapper.Mapper;
 import by.owm.domain.model.Role;
 import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
@@ -28,43 +29,25 @@ public class LoginController {
     private static final String USER = "USER";
 
     private final UserService userService;
+    private final Mapper mapper;
 
     @Autowired
-    public LoginController(final UserService userService) {
+    public LoginController(final UserService userService,
+                           final Mapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
-
-        final User userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
-
-        final UserDto user = new UserDto(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                userEntity.getToken(),
-                emptyList());
-
-        return ok().body(user);
+        final User user = userService.logIn(credentials.getEmail(), credentials.getPassword());
+        return ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/checkToken")
     public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
-        final User userEntity = userService.checkToken(tokenDto.getToken());
-
-        if (userEntity == null) {
-            return badRequest().build();
-        } else {
-            final UserDto user = new UserDto(
-                    userEntity.getName(),
-                    userEntity.getSurname(),
-                    userEntity.getEmail(),
-                    userEntity.getToken(),
-                    emptyList());
-
-            return ok().body(user);
-        }
+        final User user = userService.checkToken(tokenDto.getToken());
+        return user == null ? badRequest().build() : ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/logout")
@@ -87,6 +70,7 @@ public class LoginController {
                 : badRequest().build();
     }
 
+    //TODO: remove this in future
     @GetMapping("/create-stub-user")
     public ResponseEntity<UserDto> createStubUser() {
         return create(new RegisterUserDto(
