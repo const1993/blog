@@ -40,8 +40,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
-        final User userEntity = userService.logIn(credentials.getEmail(), credentials.getPassword());
-        return ok().body(mapper.map(userEntity, UserDto.class));
+        final User user = userService.logIn(credentials.getEmail(), credentials.getPassword());
+        return ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/checkToken")
@@ -70,6 +70,7 @@ public class LoginController {
                 : badRequest().build();
     }
 
+    //TODO: remove this in future
     @GetMapping("/create-stub-user")
     public ResponseEntity<UserDto> createStubUser() {
         return create(new RegisterUserDto(
