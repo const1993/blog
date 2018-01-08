@@ -1,6 +1,7 @@
 package by.owm.config.auth;
 
-import by.owm.service.UserService;
+import by.owm.entity.UserEntity;
+import by.owm.service.db.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +20,8 @@ public class MongoAuthenticationProvider implements AuthenticationProvider {
         final String name = authentication.getName();
         final Object principal = authentication.getPrincipal();
         Object credentials = authentication.getCredentials();
-        boolean isExist = userService.logIn(name, principal.toString());
-        if (!isExist) {
+        UserEntity userEntity = userService.findUserByEmailAndPassword(name, principal.toString());
+        if (userEntity != null) {
             return null;
         }
         final UsernamePasswordAuthenticationToken result =
