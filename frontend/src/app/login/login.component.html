@@ -2,21 +2,21 @@
   <div class="middle">
     <div class="inner">
       <form [formGroup]="loginForm" class="form-group" (ngSubmit)="onSubmit()" xmlns="http://www.w3.org/1999/html">
-        <md-form-field class="md-block">
-          <input mdInput type="text" name="email" [formControl]="email" placeholder="email" required=""/>
-          <md-error *ngIf="email.hasError('pattern')">
+        <mat-form-field class="mat-block">
+          <input matInput type="text" name="email" [formControl]="email" placeholder="email" required=""/>
+          <mat-error *ngIf="email.hasError('pattern')">
             Please enter a valid email address
-          </md-error>
-          <md-error *ngIf="email.hasError('required')">
+          </mat-error>
+          <mat-error *ngIf="email.hasError('required')">
             Email is <strong>required</strong>
-          </md-error>
-        </md-form-field>
+          </mat-error>
+        </mat-form-field>
         <br>
-        <md-form-field class="md-block">
-          <input mdInput type="password" name="password" [formControl]="password" placeholder="password" required=""/>
-        </md-form-field>
+        <mat-form-field class="mat-block">
+          <input matInput type="password" name="password" [formControl]="password" placeholder="password" required=""/>
+        </mat-form-field>
         <br>
-        <button md-raised-button color="primary" class="submit-btn" type="submit">Login!</button>
+        <button mat-raised-button color="primary" class="submit-btn" type="submit">Login!</button>
       </form>
     </div>
   </div>

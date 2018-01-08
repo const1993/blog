@@ -53,7 +53,7 @@ public class LoginController {
     @PostMapping("/logout")
     public ResponseEntity logout(@RequestBody final TokenDto tokenDto) {
         return userService.logOut(tokenDto.getToken())
-                ? ok().body(EMPTY)
+                ? ok().body("{}")
                 : badRequest().build();
     }
 
