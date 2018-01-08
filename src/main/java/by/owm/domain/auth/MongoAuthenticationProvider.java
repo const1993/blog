@@ -25,7 +25,7 @@ public class MongoAuthenticationProvider implements AuthenticationProvider {
         final Object principal = authentication.getPrincipal();
         final Object credentials = authentication.getCredentials();
 
-        if (!userService.logIn(name, principal.toString())) {
+        if (!userService.checkIslogIn(name, principal.toString())) {
             return null;
         }
 

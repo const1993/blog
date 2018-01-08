@@ -8,4 +8,6 @@ import java.io.Serializable;
 public class RoleDto implements Serializable {
 
     private static final long serialVersionUID = 801593000260887869L;
+
+    private String authority;
 }

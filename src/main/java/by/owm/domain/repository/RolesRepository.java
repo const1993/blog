@@ -1,13 +1,11 @@
 package by.owm.domain.repository;
 
-import by.owm.domain.entity.RoleEntity;
+import by.owm.domain.model.Role;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
 
-@Repository
-public interface RolesRepository extends MongoRepository<RoleEntity, String> {
-    
-    RoleEntity findByAuthority(@NotNull final String authority);
+public interface RolesRepository extends MongoRepository<Role, String> {
+
+    Role findByAuthority(@NotNull final String authority);
 }

@@ -82,11 +82,11 @@ export class LoginComponent implements OnInit {
   createFormControls() {
     this.email = new FormControl('', [
       Validators.required,
-      Validators.pattern(EMAIL_REGEX)
+      // Validators.pattern(EMAIL_REGEX)
     ]);
     this.password = new FormControl('', [
       Validators.required,
-      Validators.minLength(4)
+      // Validators.minLength(4)
     ]);
   }
 

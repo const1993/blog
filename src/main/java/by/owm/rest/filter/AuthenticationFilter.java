@@ -1,7 +1,7 @@
 package by.owm.rest.filter;
 
+import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
-import by.owm.domain.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -42,10 +42,10 @@ public class AuthenticationFilter extends GenericFilterBean {
         final String xAccess = httpRequest.getHeader("X-Access-Token");
         final String accessToken = isEmpty(xAccess) ? httpRequest.getParameter("token") : xAccess;
 
-        final UserEntity userEntity = service.findUserByToken(accessToken);
+        final User user = service.findUserByToken(accessToken);
 
-        if (userEntity != null) {
-            getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userEntity, null, unmodifiableCollection(userEntity.getRoles())));
+        if (user != null) {
+            getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, unmodifiableCollection(user.getRoles())));
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

@@ -1,7 +1,7 @@
 package by.owm.domain.user;
 
-import by.owm.domain.entity.RoleEntity;
-import by.owm.domain.entity.UserEntity;
+import by.owm.domain.model.Role;
+import by.owm.domain.model.User;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public interface UserService {
      *
      * @param email    - users email used as login.
      * @param password - users password, should be encoded.
-     * @return UserEntity.
+     * @return User.
      */
-    UserEntity findUserByEmailAndPassword(final String email, final String password);
+    User findUserByEmailAndPassword(final String email, final String password);
 
     /**
      * Finds user by token generated on registration.
@@ -22,7 +22,7 @@ public interface UserService {
      * @param token - unic token that contains encoded information about user.
      * @return unic token.
      */
-    UserEntity findUserByToken(final String token);
+    User findUserByToken(final String token);
 
     /**
      * Adds a new user in system.
@@ -35,11 +35,15 @@ public interface UserService {
      * @return success flag.
      */
     boolean addNewUser(final String name, final String surname, final String password, final String email,
-                       final List<RoleEntity> roles);
+                       final List<Role> roles);
 
-    boolean updateUser(final UserEntity userEntity);
+    boolean updateUser(final User user);
 
     boolean logOut(String token);
 
-    boolean logIn(String name, String password);
+    boolean checkIslogIn(String name, String password);
+
+    User logIn(String email, String password);
+
+    User checkToken(String token);
 }

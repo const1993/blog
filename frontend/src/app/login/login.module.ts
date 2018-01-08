@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {LoginRoutingModule} from "./login-routing.module";
 import {LoginComponent} from "./login.component";
 import {
-  MdButtonModule, MdMenuModule, MdCardModule, MdToolbarModule, MdIconModule,
-  MdInputModule, MdFormFieldModule, MdCommonModule
+  MatButtonModule, MatMenuModule, MatCardModule, MatToolbarModule,
+  MatIconModule, MatInputModule, MatFormFieldModule, MatCommonModule
 } from "@angular/material";
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
@@ -11,17 +11,17 @@ import {CommonModule} from "@angular/common";
 @NgModule({
   imports: [
     CommonModule,
-    MdCommonModule,
+    MatCommonModule,
     FormsModule,
     ReactiveFormsModule,
     LoginRoutingModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdCardModule,
-    MdToolbarModule,
-    MdIconModule,
-    MdInputModule,
-    MdFormFieldModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
 
   declarations: [LoginComponent]

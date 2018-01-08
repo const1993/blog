@@ -1,9 +1,8 @@
 package by.owm.rest.controller;
 
-import by.owm.domain.acessToken.AccessTokenService;
-import by.owm.domain.entity.AccessTokenEntity;
-import by.owm.domain.entity.RoleEntity;
-import by.owm.domain.entity.UserEntity;
+import by.owm.domain.mapper.Mapper;
+import by.owm.domain.model.Role;
+import by.owm.domain.model.User;
 import by.owm.domain.user.UserService;
 import by.owm.rest.dto.CredentialsDto;
 import by.owm.rest.dto.RegisterUserDto;
@@ -17,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
-import static java.time.LocalDateTime.now;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.springframework.http.ResponseEntity.badRequest;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -34,69 +29,31 @@ public class LoginController {
     private static final String USER = "USER";
 
     private final UserService userService;
-    private final AccessTokenService tokenService;
+    private final Mapper mapper;
 
     @Autowired
-    public LoginController(final UserService userService, final AccessTokenService accessTokenService) {
+    public LoginController(final UserService userService,
+                           final Mapper mapper) {
         this.userService = userService;
-        this.tokenService = accessTokenService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody final CredentialsDto credentials) {
-        final UserEntity userEntity = userService.findUserByEmailAndPassword(credentials.getEmail(), credentials.getPassword());
-        if (userEntity == null) {
-            return notFound().build();
-        }
-
-        final AccessTokenEntity accessTokenEntity = tokenService.createNewToken(userEntity);
-        if (accessTokenEntity == null) {
-            return notFound().build();
-        }
-
-        userEntity.setToken(accessTokenEntity.getToken());
-        userEntity.setLastLogin(now());
-        boolean result = userService.updateUser(userEntity);
-        if (!result) {
-            return badRequest().build();
-        }
-
-        final UserDto user = new UserDto(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                accessTokenEntity.getToken(),
-                emptyList());
-
-        return ok().body(user);
+        final User user = userService.logIn(credentials.getEmail(), credentials.getPassword());
+        return ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/checkToken")
     public ResponseEntity<UserDto> checkToken(@RequestBody final TokenDto tokenDto) {
-        final UserEntity userEntity = userService.findUserByToken(tokenDto.getToken());
-        if (userEntity == null) {
-            return notFound().build();
-        }
-
-        final LocalDateTime lastLogin = userEntity.getLastLogin();
-        if (now().minusHours(2).isAfter(lastLogin)) {
-            return badRequest().build();
-        }
-
-        final UserDto user = new UserDto(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                userEntity.getToken(),
-                emptyList());
-
-        return ok().body(user);
+        final User user = userService.checkToken(tokenDto.getToken());
+        return user == null ? badRequest().build() : ok().body(mapper.map(user, UserDto.class));
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(@RequestBody final TokenDto tokenDto) {
         return userService.logOut(tokenDto.getToken())
-                ? ok().body(EMPTY)
+                ? ok().body("{}")
                 : badRequest().build();
     }
 
@@ -107,12 +64,13 @@ public class LoginController {
                 user.getSurname(),
                 user.getPassword(),
                 user.getEmail(),
-                singletonList(new RoleEntity(USER))
+                singletonList(new Role(USER))
         )
                 ? ok().body(user)
                 : badRequest().build();
     }
 
+    //TODO: remove this in future
     @GetMapping("/create-stub-user")
     public ResponseEntity<UserDto> createStubUser() {
         return create(new RegisterUserDto(
